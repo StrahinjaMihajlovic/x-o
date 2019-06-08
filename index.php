@@ -21,7 +21,7 @@ if(!is_resource($socket)){
     onSocketFailure("Neuspesno kreiranje socketa");
 }
 
-socket_connect($socket, "chat.stackoverflow.com", 6667)
+socket_connect($socket, "127.0.0.1", 11000)
         or onSocketFailure("Server se ne odaziva", $socket);
 
 socket_write($socket, "Vozdra!");
@@ -29,4 +29,9 @@ socket_write($socket, "Vozdra!");
 
 
 
-socket_close($socket);
+
+?>
+<p><?php echo socket_read($socket, 10)?></p>
+
+<?php 
+socket_close($socket);?>
