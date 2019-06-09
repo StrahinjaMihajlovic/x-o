@@ -3,6 +3,8 @@ package nigga1;
 import java.io.*;
 import java.net.*;
 
+
+
 class ServerThread extends Thread {
     private Socket socket;
  
@@ -11,7 +13,8 @@ class ServerThread extends Thread {
     }
  
     public void run() {
-        try {
+       try {
+        	
             InputStream input = socket.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
  
@@ -31,10 +34,14 @@ class ServerThread extends Thread {
             
  			
             socket.close();
+            
+            System.out.println(socket.isClosed());
+            this.interrupt();
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();
         }
+       
     }
 }
 
@@ -49,14 +56,19 @@ public class Main {
 		int port = 11000;
 		
         try (ServerSocket serverSocket = new ServerSocket(port)) {
- 
+        	
             System.out.println("Server is listening on port " + port);
- 
+           
             while (true) {
+           
                 Socket socket = serverSocket.accept();
-                System.out.println("New client connected");
-                
+                System.out.println("New client connected" + socket.isClosed());
+                // Ima problem sa prijemom podataka posle prvog povezivanja.
+                // ne znam da li je zbog thread-ova jer sa svakom konekcijom se pravi novi
+                //a onaj stari i dalje radi. Videti da li se moze ugasiti thread kad
+                // zavrsi ili na neki drugi nacin da se oslobodi socket(moja pretpostavka).
                 new ServerThread(socket).start();
+                
             }
             
  

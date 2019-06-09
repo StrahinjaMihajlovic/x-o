@@ -1,8 +1,10 @@
 <head>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="css/glavni.css">
+        <script src="js/jquery-3.4.1.js"></script>  
     <script src="bootstrap/js/bootstrap.js"></script>
-    <script src="js/jquery-3.4.1.js"></script>  
+
+  
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
@@ -56,7 +58,7 @@ $str = "Vozdra!\r\n";
 socket_write($socket, $str, strlen($str));
 
 ?>
-<p><?php  $buf = "";echo socket_read($socket, 50);?></p>
+<p><?php echo socket_read($socket, 50);?></p>
 
 <?php 
  socket_shutdown($socket, 2);
@@ -64,3 +66,4 @@ socket_write($socket, $str, strlen($str));
   
 ?>
 
+  <script src="js/glavni.js"></script>
