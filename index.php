@@ -1,3 +1,32 @@
+<head>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="css/glavni.css">
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="js/jquery-3.4.1.js"></script>  
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<div class="Tabla container-fluid">
+    <div class="row">
+        <div class ="polje col" id="1"></div>
+        <div class ="polje col" id="2"></div>
+        <div class ="polje col" id="3"></div>
+    </div>
+     <div class="row">
+         <div class ="polje col" id='4'></div>
+        <div class ="polje col" id='5'></div>
+        <div class ="polje col" id="6"></div>
+    </div>
+    <div class="row">
+        <div class ="polje col" id="7"></div>
+        <div class ="polje col" id='8'></div>
+        <div class ="polje col" id="9"></div> 
+   </div>
+    
+</div>
+
+
 <?php
 
 /* 
@@ -15,7 +44,8 @@ function onSocketFailure(string $message, $socket = null) {
 
 $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 
-socket_bind($socket, "127.0.0.1");
+socket_bind($socket, "127.0.0.1", 11001);
+
 
 if(!is_resource($socket)){
     onSocketFailure("Neuspesno kreiranje socketa");
@@ -26,12 +56,13 @@ socket_connect($socket, "127.0.0.1", 11000)
 
 socket_write($socket, "Vozdra!");
 
-
-
-
-
 ?>
-<p><?php echo socket_read($socket, 10)?></p>
+<p><?php $prom = ""; $buf = &$prom; socket_rec($socket, $buf, 8, MSG_DONTWAIT); echo $buff;?></p>
 
 <?php 
-socket_close($socket);?>
+
+  
+        socket_close($socket);
+  
+?>
+
