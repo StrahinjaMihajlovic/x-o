@@ -21,12 +21,14 @@ class ServerThread extends Thread {
  
             String text;
             	
-            do {
+           //Strahinja: uklonio sam do{}while() 
+            //jer nije odgovarao potrebi i bacao je exception,
+            //sledeci kod radi i back end i front end
                 text = reader.readLine();
                 String reverseText = new StringBuilder(text).reverse().toString();
                 writer.println("Server: " + reverseText);
- 
-            } while (!text.equals("bye"));
+                System.out.println(text);
+            
  			
             socket.close();
         } catch (IOException ex) {
@@ -53,9 +55,10 @@ public class Main {
             while (true) {
                 Socket socket = serverSocket.accept();
                 System.out.println("New client connected");
- 
+                
                 new ServerThread(socket).start();
             }
+            
  
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());

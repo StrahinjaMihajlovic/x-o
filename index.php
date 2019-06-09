@@ -43,7 +43,7 @@ function onSocketFailure(string $message, $socket = null) {
 }
 $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 
-socket_bind($socket, "127.0.0.1", 11001);
+socket_bind($socket, "127.0.0.2", 11001);
 
 
 if(!is_resource($socket)){
@@ -52,11 +52,11 @@ if(!is_resource($socket)){
 
 socket_connect($socket, "127.0.0.1", 11000)
         or onSocketFailure("Server se ne odaziva", $socket);
-
-socket_write($socket, "Vozdra!");
+$str = "Vozdra!\r\n";
+socket_write($socket, $str, strlen($str));
 
 ?>
-<p><?php $prom = ""; $buf = &$prom; socket_rec($socket, $buf, 8, MSG_DONTWAIT); echo $buff;?></p>
+<p><?php  $buf = "";echo socket_read($socket, 50);?></p>
 
 <?php 
  socket_shutdown($socket, 2);
