@@ -17,13 +17,22 @@ $('.polje').click(function(e){
     e.preventDefault();
     var prom =  $(this).attr('id');
     
-    console.log(prom);
+   
     $.post('Igra.php', {polje: prom}, function(data) {
-        for(i=1; i<=9; i++){
+      /*  for(i=1; i<=9; i++){
             if(data[i] == '1'){
                 $('#'+i).append("<img src='slike/x.jpeg'></img>")
                
+            }*/
+        var i =1;
+        for(o of data){
+            console.log(o + '\n');
+            if(o == 'x'){
+            $('#'+ i++).append("<img src='slike/x.jpg' class='slika'></img>");
+            }else{
+                $('#'+ i++).append("<img src='slike/o.jpeg' class='slika'></img>");
             }
         }
+        
     });
 });
