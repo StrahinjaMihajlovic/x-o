@@ -14,7 +14,7 @@ function onSocketFailure(string $message, $socket = null) {
     die($message);
 }
 $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-
+socket_bind($socket, '127.0.0.1', 11002);
 
 
 
@@ -25,14 +25,15 @@ if(!is_resource($socket)){
 socket_connect($socket, "127.0.0.1", 11000)
         or onSocketFailure("Server se ne odaziva", $socket);
 
-$str = $_POST['polje'] . '\r\n'. chr(0);
+$str = '' .$_POST['polje']  . '';
 
-echo $str;
-socket_send($socket, $str, strlen($str), MSG_EOF);
+//echo $str;
+//socket_send($socket, $str, strlen($str), MSG_EOF);
+socket_write($socket, $str, strlen($str));
+socket_shutdown($socket, 1);
+ echo socket_read($socket, strlen($str) + 10);
 
- echo socket_read($socket, strlen($str)+50);
 
-echo 'nisu primljeni podaci isravno';
 socket_shutdown($socket, 2);
        socket_close($socket);
         

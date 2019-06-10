@@ -24,17 +24,25 @@ class ServerThread extends Thread {
             PrintWriter writer = new PrintWriter(output, true);
             	
  
-            String text;
+            String text = "";
             	
            //Strahinja: uklonio sam do{}while() 
             //jer nije odgovarao potrebi i bacao je exception,
             //sledeci kod radi i back end i front end
-               text = reader.readLine();
+            int ch = 0;
+               while((ch = reader.read()) != -1) {
+            	   char[] a = {(char)ch};
+            	   System.out.println(a);
+            	   text += new String(a,0,1);
+               }
+            //text = reader.readLine();
                 
-                
-                String reverseText = new StringBuilder(text).reverse().toString();
+                String reverseText = new StringBuilder(new String(text)).reverse().toString();
                 writer.println("Server: " + reverseText );
-                System.out.println(text);
+                output.flush();
+                output.close();
+                
+                System.out.println(reverseText);
                 
  			
             socket.close();
@@ -62,7 +70,7 @@ public class Main {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
         	
             System.out.println("Server is listening on port " + port);
-           
+            
             while (true) {
             	
                 Socket socket = serverSocket.accept();
