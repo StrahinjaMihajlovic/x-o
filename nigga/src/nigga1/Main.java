@@ -29,10 +29,8 @@ class ServerThread extends Thread {
            //Strahinja: uklonio sam do{}while() 
             //jer nije odgovarao potrebi i bacao je exception,
             //sledeci kod radi i back end i front end
-                //
+               text = reader.readLine();
                 
-                
-                	text = reader.readLine();
                 
                 String reverseText = new StringBuilder(text).reverse().toString();
                 writer.println("Server: " + reverseText );
