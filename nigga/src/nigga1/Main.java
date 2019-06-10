@@ -38,7 +38,7 @@ class ServerThread extends Thread {
             //text = reader.readLine();
                 
                 String reverseText = new StringBuilder(new String(text)).reverse().toString();
-                writer.println("Server: " + reverseText );
+                writer.println( reverseText );
                 output.flush();
                 output.close();
                 

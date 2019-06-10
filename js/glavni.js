@@ -5,7 +5,7 @@
  */
 
 
-$('.polje').on('click', function(){
+$('.polje').click(function(e){
     /*$.ajax({url:"Igra.php",type:'POST', data:{polje: prom}; success: function (data, textStatus, jqXHR) {
             for(i=1; i<data.length; i++){
                 $("#"+i).append('<img class="slika" src="slike/'+data[i-1]+'></img>"'); //za pocetak mozemo slati
@@ -14,11 +14,16 @@ $('.polje').on('click', function(){
                 console.log(data[i]);
             }
         }});*/
-    
+    e.preventDefault();
     var prom =  $(this).attr('id');
     
     console.log(prom);
     $.post('Igra.php', {polje: prom}, function(data) {
-        console.log(data);
+        for(i=1; i<=9; i++){
+            if(data[i] == '1'){
+                $('#'+i).append("<img src='slike/x.jpeg'></img>")
+               
+            }
+        }
     });
 });
