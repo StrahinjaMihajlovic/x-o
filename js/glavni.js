@@ -27,10 +27,12 @@ $('.polje').click(function(e){
         var i =1;
         for(o of data){
             console.log(o + '\n');
-            if(o == 'x'){
-            $('#'+ i++).append("<img src='slike/x.jpg' class='slika'></img>");
+            $('.polje').empty();
+            if(o === 'x'){
+            
+            $('#'+ i++).html("<img src='slike/x.jpg' class='slika'></img>");
             }else{
-                $('#'+ i++).append("<img src='slike/o.jpeg' class='slika'></img>");
+                $('#'+ i++).html("<img src='slike/o.jpeg' class='slika'></img>");
             }
         }
         
