@@ -18,7 +18,7 @@ $('.polje').on('click', function(){
     var prom =  $(this).attr('id');
     
     console.log(prom);
-    $.post('Igra.php', {'polje': prom}, function(data) {
+    $.post('Igra.php', {polje: prom}, function(data) {
         console.log(data);
-    }, 'text');
+    });
 });
