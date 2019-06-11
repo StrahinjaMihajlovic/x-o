@@ -5,8 +5,10 @@ import java.net.*;
 
 class igra{
 	public static char[][] matrix = null;
-	public static int igr1 = 0;
+	public static int igr1 = 0; // flagovi da se proveri da li su igraci povezani i koji je zadnji igrao
 	public static int igr2 = 0;
+	public static int zadnji = 0;
+	public static int prvi = 0;
 	public igra() {
 		if (matrix == null) {
 			matrix = new char[3][3];
@@ -19,6 +21,7 @@ class igra{
 	}
 	
 	public void provera(int igrac) {
+		
 		char oznaka = igrac == 1 ? 'x':'o';
 		char pobeda = igrac == 1 ? 't':'r';
 		// proveravamo svaku mogucnost za pobedom i zamenimo odgovarajucim simbolima
@@ -48,27 +51,34 @@ class igra{
 		if(matrix[0][2]  == oznaka && matrix[1][1]  == oznaka &&matrix[2][0]  == oznaka ) {
 			matrix[0][2] = pobeda;matrix[1][1] = pobeda;matrix[2][0] = pobeda;
 		}
-		// i onda proverimo da li je nereseno i restartujemo matricu
+		// i onda proverimo da li je nereseno i restartujemo matricu u svakim slucajevima.
 		int brojac = 0;;
 		for(int i = 0; i<3;i++)
 			for(int j = 0; j<3; j++)
 				brojac += igra.matrix[i][j] == '0' ? 1:0;
-		if(brojac == 0)
+		if(brojac == 0) {
+			igra.prvi = igra.prvi == 1 ? 2:1;
 			for(int i = 0; i<3;i++)
 				for(int j = 0; j<3; j++)
 					igra.matrix[i][j] = '0';
+			//igra.prvi = igra.prvi == 1 ? 2:1;
+			}
 	}
 	
 	public void potez(int polje, int igrac) throws Exception {
+		if(prvi == 0) 
+			prvi = igrac;
 		try {
-			if(polje>=7 && matrix[2][polje-7] == '0') {
-				
+			if(zadnji == igrac) {
+				return; //preskoci ako je vec igrao.
+			}else if(polje>=7 && matrix[2][polje-7] == '0') {
+				zadnji = igrac;
 				matrix[2][polje-7] = igrac == 1 ? 'x':'o';
 			}else if(polje>=4 && matrix[1][polje -4] == '0') {
-				
+				zadnji = igrac;
 				matrix[1][polje-4] = igrac == 1 ? 'x':'o';
 			}else if(matrix[0][polje-1] == '0'){
-				
+				zadnji = igrac;
 				matrix[0][polje-1] = igrac == 1 ? 'x':'o';
 			}
 		provera(igrac);
@@ -121,7 +131,10 @@ class ServerThread extends Thread {
                }
                text = text<10 ? 1:text;
             //text = reader.readLine();
-                if(text>=10) {
+                if(text>=10) { //proverimo da li je igrac novopovezan ili neko ko je
+                	//jedan od igraca. Sa klijentske strane dobijemo broj koji kad se
+                	//podeli daje polje koje je igrac igrao, a modul daje koji je igrac
+                	//pitanju
                 try {
 					Igra.potez(text/10, text%10);
 					 writer.println( Igra.toString() );
@@ -142,14 +155,16 @@ class ServerThread extends Thread {
                
                 output.flush();
                 output.close();
-                
+                //restartujemo matricu i menjamo prvog igraca ako dodje do pobede
                 if(Igra.toString().indexOf("t") >(-1) || Igra.toString().indexOf("r") >(-1)) {
                 	for(int i = 0; i<3;i++) {
         				for(int j = 0; j<3; j++) {
         					igra.matrix[i][j] = '0';
-                		}
-                		
-                }}
+	                	}
+	                		
+	                }
+                	igra.prvi = igra.prvi == 1 ? 2:1;
+                }
                 System.out.println(Igra.toString());
                 
  			
@@ -169,9 +184,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		//if (args.length < 1) return;
-		 
-        //int port = Integer.parseInt(args[0]);
+		
  
 		int port = 11000;
 		igra Igra = new igra();
