@@ -21,7 +21,7 @@ class igra{
 	public void provera(int igrac) {
 		char oznaka = igrac == 1 ? 'x':'o';
 		char pobeda = igrac == 1 ? 't':'r';
-		
+		// proveravamo svaku mogucnost za pobedom i zamenimo odgovarajucim simbolima
 		if(matrix[0][0]  == oznaka && matrix[0][1]  == oznaka &&matrix[0][2]  == oznaka ) {
 			matrix[0][0] = pobeda;matrix[0][1] = pobeda;matrix[0][2] = pobeda;
 		}
@@ -48,10 +48,19 @@ class igra{
 		if(matrix[0][2]  == oznaka && matrix[1][1]  == oznaka &&matrix[2][0]  == oznaka ) {
 			matrix[0][2] = pobeda;matrix[1][1] = pobeda;matrix[2][0] = pobeda;
 		}
+		// i onda proverimo da li je nereseno i restartujemo matricu
+		int brojac = 0;;
+		for(int i = 0; i<3;i++)
+			for(int j = 0; j<3; j++)
+				brojac += igra.matrix[i][j] == '0' ? 1:0;
+		if(brojac == 0)
+			for(int i = 0; i<3;i++)
+				for(int j = 0; j<3; j++)
+					igra.matrix[i][j] = '0';
 	}
 	
-	public void potez(int polje, int igrac) {
-		
+	public void potez(int polje, int igrac) throws Exception {
+		try {
 			if(polje>=7 && matrix[2][polje-7] == '0') {
 				
 				matrix[2][polje-7] = igrac == 1 ? 'x':'o';
@@ -63,6 +72,9 @@ class igra{
 				matrix[0][polje-1] = igrac == 1 ? 'x':'o';
 			}
 		provera(igrac);
+		}catch(ArrayIndexOutOfBoundsException e) {
+			throw new Exception();
+		}
 	}
 
 	@Override
@@ -110,8 +122,13 @@ class ServerThread extends Thread {
                text = text<10 ? 1:text;
             //text = reader.readLine();
                 if(text>=10) {
-                Igra.potez(text/10, text%10);
-                writer.println( Igra.toString() );
+                try {
+					Igra.potez(text/10, text%10);
+					 writer.println( Igra.toString() );
+				} catch (Exception e) {
+					 writer.println( Igra.toString() );
+				}
+               
                 }else {
                 	 if(igra.igr1 == 0) {
                 		 igra.igr1 = 1;
@@ -126,6 +143,13 @@ class ServerThread extends Thread {
                 output.flush();
                 output.close();
                 
+                if(Igra.toString().indexOf("t") >(-1) || Igra.toString().indexOf("r") >(-1)) {
+                	for(int i = 0; i<3;i++) {
+        				for(int j = 0; j<3; j++) {
+        					igra.matrix[i][j] = '0';
+                		}
+                		
+                }}
                 System.out.println(Igra.toString());
                 
  			

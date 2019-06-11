@@ -4,7 +4,48 @@
  * and open the template in the editor.
  */
 
-
+function worker() {
+  $.ajax({
+    url: 'Igra.php', 
+    method:"POST",
+     data: {marker : 2},
+    success: function(data) {
+       console.log(data);
+       $('.polje').empty();
+       
+        var o;
+        var i;
+        for(i = 0; i<9; i++){
+           o = data.charAt(i);
+           console.log(data[i]);
+               
+            
+            if(o.valueOf() === "x".valueOf()){
+            
+            $('#'+ (i+1)).html("<img src='slike/x.jpg' class='slika'></img>");
+            }else if(o.valueOf() === "o".valueOf()){
+                $('#'+ (i+1)).html("<img src='slike/o.jpeg' class='slika'></img>");
+            }else if(o.valueOf() === 't'.valueOf()){
+                window.alert('pobedio je igrac X');
+                break;
+            }else if(o.valueOf() === 'r'.valueOf()){
+                window.alert('pobedio je igrac O');
+                break;
+            }
+        }
+    },
+    complete: function() {
+      //za periodicno ponavljanje
+      setTimeout(worker, 2000);
+    }
+     
+  })
+};
+$(document).ready(function() {
+  setTimeout(function() {
+        worker();
+}, 2000);
+});
 $('.polje').click(function(e){
     /*$.ajax({url:"Igra.php",type:'POST', data:{polje: prom}; success: function (data, textStatus, jqXHR) {
             for(i=1; i<data.length; i++){
@@ -22,11 +63,7 @@ $('.polje').click(function(e){
     
    
     $.post('Igra.php', {polje: prom, igr: igrac}, function(data) {
-      /*  for(i=1; i<=9; i++){
-            if(data[i] == '1'){
-                $('#'+i).append("<img src='slike/x.jpeg'></img>")
-               
-            }*/
+      
         
         console.log(data);
        $('.polje').empty();
@@ -47,6 +84,7 @@ $('.polje').click(function(e){
                 break;
             }else if(o.valueOf() === 'r'.valueOf()){
                 window.alert('pobedio je igrac O');
+                break;
             }
         }
         
