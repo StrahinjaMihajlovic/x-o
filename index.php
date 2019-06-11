@@ -54,13 +54,13 @@ if(!is_resource($socket)){
 
 socket_connect($socket, "127.0.0.1", 11000)
         or onSocketFailure("Server se ne odaziva", $socket);
-$str = "Vozdra!\n";
+$str = "\n";
 socket_write($socket, $str, strlen($str));
 socket_shutdown($socket, 1);
 //socket_send($socket, $str, strlen($str), MSG_EOF);
 
 ?>
-<p><?php echo socket_read($socket, strlen($str) +10);?></p>
+<p id="vrednost"><?php echo socket_read($socket, strlen($str) +10);?></p>
 
 <?php 
 

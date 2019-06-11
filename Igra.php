@@ -26,7 +26,7 @@ socket_connect($socket, "127.0.0.1", 11000)
         or onSocketFailure("Server se ne odaziva", $socket);
 
 $str = '' .$_POST['polje']  . '';
-
+$str .= '' .$_POST['igr'] ;
 //echo $str;
 //socket_send($socket, $str, strlen($str), MSG_EOF);
 socket_write($socket, $str, strlen($str));

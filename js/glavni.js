@@ -15,24 +15,38 @@ $('.polje').click(function(e){
             }
         }});*/
     e.preventDefault();
-    var prom =  $(this).attr('id');
+   
+      var prom =  $(this).attr('id');  
+      var igrac = $('#vrednost').text();
+      //console.log(igrac);
     
    
-    $.post('Igra.php', {polje: prom}, function(data) {
+    $.post('Igra.php', {polje: prom, igr: igrac}, function(data) {
       /*  for(i=1; i<=9; i++){
             if(data[i] == '1'){
                 $('#'+i).append("<img src='slike/x.jpeg'></img>")
                
             }*/
-        var i =1;
-        for(o of data){
-            console.log(o + '\n');
-            $('.polje').empty();
-            if(o === 'x'){
+        
+        console.log(data);
+       $('.polje').empty();
+        var o;
+        var i;
+        for(i = 0; i<9; i++){
+           o = data.charAt(i);
+           console.log(data[i]);
+               
             
-            $('#'+ i++).html("<img src='slike/x.jpg' class='slika'></img>");
-            }else{
-                $('#'+ i++).html("<img src='slike/o.jpeg' class='slika'></img>");
+            if(o.valueOf() === "x".valueOf()){
+            
+            $('#'+ (i+1)).html("<img src='slike/x.jpg' class='slika'></img>");
+            }else if(o.valueOf() === "o".valueOf()){
+                $('#'+ (i+1)).html("<img src='slike/o.jpeg' class='slika'></img>");
+            }else if(o.valueOf() === 't'.valueOf()){
+                window.alert('pobedio je igrac X');
+                break;
+            }else if(o.valueOf() === 'r'.valueOf()){
+                window.alert('pobedio je igrac O');
             }
         }
         
